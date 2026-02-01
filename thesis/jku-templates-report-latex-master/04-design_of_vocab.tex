@@ -1,0 +1,423 @@
+\cleardoubleoddpage%  Make sure to start each chapter on a new odd page
+\chapter{Design Of A Metadata Vocabulary For Ontologies}
+\label{sec:Design}
+
+In the following chapter the actual vocabulary will be described in detail after introducing a first design draft. But beforehand, an analysis is carried out to determine which vocabularies are already in frequent use.
+
+\section{Analysis Of Existing Metadata Vocabularies}
+To get an overview, firstly the work from Biswanath Dutta et al., wherein the creation of MOD 1.2 is documented as well as an analysis of existing metadata vocabularies to describe ontologies, was evaluated \cite{bib:modPaper}. Early and still broadly used standards include the Dublin Core (DC) and DCMI Metadata Terms (DCT), which originated in the late 1990s from the DCMI initiative for describing electronic objects. These were followed in the early 2000s by the major W3C Recommendations—RDFS, OWL and SKOS, which rapidly became foundational and widely used across the Semantic Web.
+In 2005, the Ontology Metadata Vocabulary (OMV) was created within several EU research projects. Although it introduced a reasonably rich schema (16 classes, 33 object properties, 29 data properties), OMV saw only limited adoption and was abandoned around 2007. Its most significant limitation was the lack of alignment with prevailing standard vocabularies. This weakness inspired the development of MOD 1.0, which reused elements from SKOS, FOAF, DC as well as DCT, and introduced additional classes and properties. Despite this improvement, MOD 1.0 still lacked several relevant metadata elements. Also in 2005, the lightweight but practical VANN vocabulary for annotating vocabulary descriptions emerged and has since seen frequent usage. In contrast, the Descriptive Ontology of Ontology Relations (DOOR), published in 2009 as a highly formal vocabulary defining 32 relations between ontologies, never gained traction beyond the NeON project. Later, the VOAF vocabulary was introduced to describe vocabularies used in the Linked Data cloud. Although VOAF captures relationships between vocabularies, it does not reference OWL or DOOR, despite overlapping functionality. Ontologies share characteristics with datasets and data catalog assets, and for this reason several dataset-oriented vocabularies have become relevant. VoID, created in the late 2000s, is widely used in the Linked Data ecosystem to describe datasets. Even more influential is DCAT, a W3C Recommendation designed for dataset and catalog metadata, along with its profile ADMS for semantic assets such as code lists and taxonomies. Schema.org has also contributed a broadly adopted dataset class. Additional vocabularies relevant to ontology metadata include FOAF and DOAP (for people and projects), Creative Commons (for rights information), SPARQL Service Description (for endpoints) and provenance vocabularies such as PROV and PAV. OboInOwl offers mappings for OBO ontology headers and is commonly used within the OBO community, although it is not a standard.
+
+Recent developments have significantly modernized metadata practices for ontologies, particularly through the evolution of MOD. MOD 2.0 represents a substantial redesign and is built explicitly as an extension of DCAT2, the 2020 revision of the W3C Data Catalog Vocabulary. By adopting DCAT2 as its foundation, MOD 2.0 integrates ontology metadata into broader dataset catalog practices and becomes fully aligned with FAIR principles. MOD 2.0 introduces a clear model centered on classes such as \textit{mod:SemanticArtefact} and \textit{mod:SemanticArtefactDistribution}, incorporates provenance information, and systematically reuses established vocabularies including DCAT2, DCT, FOAF, Schema.org and ADMS. Building on this, newer releases—referred to collectively as MOD 3.x—further consolidate MOD as a DCAT2-aligned profile. The latest specifications, including MOD 3.2.x, expand the set of classes beyond those in MOD 2.0 and refine the modeling of semantic artefacts, distributions and related services \cite{bib:modPaper}.
+
+As the researchers at MOD 1.2 recognized back then, there is a strong overlap in all the vocabularies studied. It shows that no currently existing vocabularies really covers
+enough aspects of ontologies to be used solely. Despite a few
+exceptions, metadata vocabularies do not rely on one another and redefine things that
+have already been described several times before. This makes it all the more important to implement this in the resulting vocabulary, especially enhancing those things MOD 2.0 / 3.0 misses.
+
+\section{Use Of Those Current Existing Vocabularies}
+	Here is what Biswanath Dutta et al. found out in their study while analysing 222 ontologies distributed over several sources (108 from NCBO BioPortal, 53 from AgroPortal, 61 from a simple google search):
+\begin{itemize}
+	\item Without descriptions/annotations: 23
+	\item With metadata: 199 - number of properties from 1 to 20
+	\item 53 ontologies retrieved from AgroPortal
+	\begin{itemize}
+		\item 2 ontologies with only 1 metadata property
+		\item 8 ontologies with 10–20 properties
+		\item 21 ontologies with 2–9 properties
+	\end{itemize}
+	\item 32 vocabularies used in total		
+	\begin{itemize}
+		\item 12 most frequently used, half of which are W3C or Dublin Core standards
+		\item 20 less common vocabularies, mostly used once or a few times, including PROV, SCHEMA, VOID, ADMS, DOAP, PRISM, EFO, IRON, CITO, etc.
+	\end{itemize}
+\end{itemize}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{images/table_of_vocabs}
+	\caption{
+		Frequently used Metadata Vocabularies
+	}\label{fig:usedVocabs}
+\end{figure}
+
+Most of the 32 vocabularies examined are general-purpose, and ontology-specific metadata vocabularies (e.g., OMV, DOOR) are entirely absent from the selected sample. Two widely used vocabularies, oboInOwl and Protege annotations, appear because they are automatically included by ontology development tools. The most frequently used metadata elements are \textit{rdfs:comment}, \textit{owl:versionOf}, and \textit{owl:imports}, likely due to their easy availability in editors such as Protégé, where selected RDFS and OWL properties are readily accessible via the annotation tab.
+
+The study also observes several issues: multiple properties often capture the same information, e.g., some ontologies use \textit{dc:license}, others \textit{cc:license}. Also there is confusion between DC and DCT, since DCT refines the 15 core DC properties and generic properties such as \textit{rdfs:comment} or \textit{dc:date} are frequently used instead of more specific alternatives, like \textit{dc:description} or \textit{dc:created/dc:modified}.
+
+\newpage
+\section{Initial Design Considerations}
+First of all, consideration was given to how the vocabulary is fundamentally structured. What was clear from the outset was that there should be a superclass \textit{Resource} that contains all possible things, i.e., in principle, everything is a resource - ontologies, but also persons or versions of an ontology. The actual resulting classes are described in chapter \ref{structure}. It is important to note that the vocabulary aims to capture all possible metadata that someone might want to use. This was achieved by taking a large number of metadata properties from existing, widely used vocabularies and supplementing them with new properties created for metadata that is new and does not yet exist anywhere else. The first draft was a simple sketch created in draw.io \footnote{\url{https://www.drawio.com/}} \ref{fig:firstDraft}, containing the classic metadata that usually comes to mind first, as well as a rough overview of the abstract components and their relationships, which, incidentally, does not follow any strict technology such as UML, but is simply intended to provide an abstract, initial overview of the components of the system, not tied to any specific modeling technology.
+
+Each component, such as a class or property, must be described in detail, by using properties such as rdfs:label, rdfs:isDefinedBy, dcterms:issued, or dcterms:descriptions, in order to specify all meta information for each component, which contributes to better understanding and reusability of the whole system. In addition, the URI of an existing property which was used should always be specified. Another fundamental question was whether existing properties that are to be reused should simply be adopted directly, or whether they get defined as an own property that then refer to the existing ones. For example, if the property \textit{http://purl.org/dc/terms/title} \footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/terms/title/}}  should be directly imported into the vocabulary, or an own property should be created which then refers to it with the use of \textit{rdfs:subPropertyOf} \footnote{\url{https://www.w3.org/TR/rdf-schema/\#ch_subpropertyof}}. However, this would be unnecessary for relatively simple properties, as we want to use exactly this property and do not want to achieve a more narrow specialization. The property already fits semantically, so if the range shall not be restricted, for example, this is the better solution in terms of reusability and maintenance of the vocabulary. A reference would express that the title property is more specific than \textit{<http://purl.org/dc/terms/title>} and inherits its meaning, but as mentioned above, this would only make sense if the standard property is too general and additional restrictions are needed or a different name is desired. However, common practice is to use suitable properties directly, as is the case in MOD2.0 e.g. \cite{bib:modPaper}. In general, whenever an existing property exactly matches the use case, it is simply used, although there were added some own, newly defined properties, having no reference to any existing properties, of course. Furthermore, documentation tools and metadata portals then recognize the properties immediately.
+
+But why not simply creating own properties everytime?
+It is, in principle, possible to define a custom data-type property, and this would function technically. However, there are strong reasons to reuse established properties from well-known vocabularies: tools such as reasoners, SPARQL queries, or other ontologies can automatically recognize the corresponding data because they are familiar with these properties. Vocabularies such as VANN are also well established, using them corresponds to speaking the “common language” of the community. Ontologies or datasets that rely on VANN can directly read and interpret the relevant information without requiring additional explanation.
+
+As the file format for the vocabulary Turtle was choosen, since it's the most used representation form, as well as the simpliest, foremost in contrast to RDF/XML. Turtle allows direct representation of OWL ontologies while remaining fully compatible with RDF. All OWL constructs—classes, properties, individuals, hierarchies and restrictions, are ultimately expressed as RDF triples, making Turtle a flexible format for ontology serialization. Due to its size, the complete file content is not included in this thesis, nevertheless short sections are briefly presented, the entire ontology is available on GitHub \footnote{\url{https://github.com/moritzhaider/aowm}}.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{images/firstDraft}
+	\caption{
+		First Draft Of Vocabulary Structure
+	}\label{fig:firstDraft}
+\end{figure}
+
+\newpage
+\section{Discovering Of Concrete Properties}
+In the previous sections a first overview was developed, to get a feeling which vocabularies exist and which are frequently used. To select according properties, foremost the checklist for complete vocabulary metadata was a very good resource, in order to know some property types which definitely should occur \footnote{\url{https://dgarijo.github.io/Widoco/doc/bestPractices/index-en.html}}. Also, the \textit{Metadata for Ontology Description and Publication Ontology} was a great inspiration to get an overview which properties are in use in an actual metadata vocabulary \footnote{\url{https://github.com/FAIR-IMPACT/MOD}}. Many other vocabularies like the FOAF, VANN or DCMI were investigated as well \footnote{\url{https://iptc.org/thirdparty/foaf/}} \footnote{\url{https://vocab.org/vann/}} \footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/}}, all together resulting in a selection of numerous properties from many vocabularies, 33, to put it more precisely. In addition, consideration was given to what kind of metadata information is not yet available in existing vocabularies, but where it makes sense to annotate this as metadata for an ontology. These were created as separate/new properties, using the class structure that was defined. 
+
+\section{Structure Of The  Vocabulary}
+\label{structure}
+Topmost at the turtle file the prefix annotations are located, in order to simplify all the utilized URIs.
+\begin{verbatim}
+	@prefix aowm:    <http://dqm.faw.jku.at/ontologies/aowm#> .
+	@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+	@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+	@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+	@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+	@prefix dct:     <http://purl.org/dc/terms/> .
+	@prefix dcterms: <http://purl.org/dc/terms/> .
+	@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+	@prefix dcmi:    <http://purl.org/dc/dcmitype/> .
+	@prefix vann:    <https://vocab.org/vann/> .
+	@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+	...
+\end{verbatim}
+
+\newpage
+Below that, the header follows, where the ontology is shortly described by using it's own vocabulary. In general, sections are always marked through a corresponding comment block. \textit{aowm} acts as a prefix for the vocabulary and the namespace \textit{<http://dqm.faw.jku.at/ontologies/>} comes from the institute that initiated this work \footnote{\url{https://www.jku.at/en/institute-for-application-oriented-knowledge-processing/}}.
+\begin{verbatim}
+	#################################################################
+	# Ontology Header 
+	#################################################################
+	<http://dqm.faw.jku.at/ontologies/aowm>
+	a owl:Ontology ;
+			dct:title "Vocabulary For Annotating Ontologies With Metadata"@en ;
+			dct:creator "Moritz Haider" ;
+			dct:description "A vocabulary designed to describe metadata about ontologies."@en ;
+			dct:created "2026-01-31"^^xsd:date ;
+			dct:license <http://creativecommons.org/licenses/by/4.0/> ;
+			vann:preferredNamespacePrefix "aowm" ;
+			vann:preferredNamespaceUri <http://dqm.faw.jku.at/ontologies/aowm#> ;
+			owl:versionInfo "0.1" .
+\end{verbatim}
+
+Afterwards section for the classes and properties can be found, whereby \textit{Resource} works as an parent class for all other classes in the vocabulary, it is a subclass of \textit{owl:Thing}.
+
+\begin{verbatim}
+	aowm:Resource
+		a owl:Class ;
+		rdfs:subClassOf owl:Thing .
+		rdfs:label "Resource"@en ;
+		rdfs:comment "Generic parent element for all domain classes in the AOWM vocabulary. 
+					  Used as the common superclass for ontology metadata resources (Distribution, Version, ...)."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+\end{verbatim}
+
+In general, classes are always structured as follows:
+\begin{verbatim}
+	aowm:Resource a owl:Class .
+\end{verbatim}
+Here, \textit{a} is shorthand for \textit{rdf:type}, declaring that \textit{aowm:Resource} is an OWL class.
+
+Classes can have hierarchical relationships, such as subclassing (\textit{rdfs:subClassOf}), enabling the definition of taxonomies and ontological hierarchies.
+\begin{verbatim}
+	rdfs:subClassOf owl:Thing .
+\end{verbatim}
+
+\newpage
+\textit{rdfs:label} assigns a human-readable name to a resource while \textit{rdfs:comment} supplements a description or explanatory text for a resource.
+\begin{verbatim}
+	rdfs:label "Resource"@en ;
+	rdfs:comment "Generic parent element for all domain classes in the AOWM vocabulary. 
+	Used as the common superclass for ontology metadata resources (Distribution, Version, ...)."@en ;
+\end{verbatim}
+
+To provide a reference to the source or ontology in which a resource is defined, \textit{rdfs:isDefinedBy} is used, while \textit{dct:issued} is utilized to indicate the creation or publication date of a document, data set or resource.
+\begin{verbatim}
+	rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+	dct:issued "2026-01-31"^^xsd:date .
+\end{verbatim}
+
+Finally, \textit{rdfs:seeAlso} serves as a reference to additional information or related resources \footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/}} \footnote{\url{https://www.w3.org/TR/rdf-schema/}}.
+\begin{verbatim}
+	rdfs:seeAlso owl:Ontology .
+\end{verbatim}
+
+In terms of logical structure, the central class for representing an ontology is described within the vocabulary as a class \textit{Ontology}, accordingly a subclass of \textit{Resource}. Moreover there is a class \textit{Catalog}, principle a data catalog in which the ontology can appear, according to \textit{mod:SemanticArtefactCatalog}, a dedicated web-based system that fosters the availability, discoverability and long-term preservation and maintenance of semantic artefacts, including ontologies \footnote{\url{https://github.com/FAIR-IMPACT/MOD}}. Such a catalog can have a record, represented by the class \textit{CatalogRecord}. Furthermore there is a class \textit{Distribution}, which is a specific representation and/or serialization of an ontology. An ontology can have several distributions, for instance an .owl file, .ttl file or a html documentation. Including these distributions is crucial for fullfilling the FAIR critera. Moreover the class \textit{Agent} is utilitzed as a resource that acts in some way or role (class \textit{Role}), also responsible for the two subclasses \textit{Person} and \textit{Organization}. Finally, the classes \textit{SerializationFormat, DegreeOfMaturity} and \textit{MetadataCreationMethod} were created to generate enumeration types that can then be used for certain properties in the range value area. For instance, the property \textit{aowm:degreeOfMaturity} looks as such:
+\begin{verbatim}
+	aowm:degreeOfMaturity
+		a owl:DatatypeProperty
+		rdfs:label "degree of Maturity"@en ;
+		rdfs:domain aowm:Ontology ;
+		rdfs:range 	aowm:DegreeOfMaturity ;
+		dct:description: "Degree of maturity of an ontology"@en ;
+		dct:issued "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+\end{verbatim}
+
+\newpage
+SKOS enables the definition of concepts that each represent a specific meaning within a semantic framework and are particularly suitable for classifications and enumerations. For this property, the different degrees of maturity were modeled as SKOS Concepts. Each concept represents a clearly defined maturity level, e.g., from an initial draft state to a fully validated and productive ontology state. The concepts were grouped within their own SKOS Concept Scheme, enabling systematic organization and consistent referencing within the metadata \footnote{\url{https://www.w3.org/TR/skos-reference/}}.
+
+The corresponding class:
+\begin{verbatim}
+	aowm:DegreeOfMaturity
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource ;
+		rdfs:label "Degree Of Maturity"@en ;
+		rdfs:subClassOf aowm:Resource ;	rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+\end{verbatim}
+
+The concept scheme:
+\begin{verbatim}
+	aowm:DegreeOfMaturityScheme
+		a skos:ConceptScheme ;
+		rdfs:label "Degree of Maturity Scheme"@en ;
+		skos:hasTopConcept aowm:Draft, aowm:Stable, aowm:Mature ;
+		dct:isPartOf <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+\end{verbatim}
+
+Containing all concepts, which display the different maturity states, referencing to the scheme as well as the corresponding class.
+\begin{verbatim}
+	aowm:Draft
+		a aowm:DegreeOfMaturity, skos:Concept ;
+		rdfs:label "draft"@en ;
+		skos:inScheme aowm:DegreeOfMaturityScheme ;
+		skos:definition "Ontology is in early development stage; incomplete and experimental."@en .
+	
+	aowm:Stable
+		a aowm:DegreeOfMaturity, skos:Concept ;
+		rdfs:label "stable"@en ;
+		skos:inScheme aowm:DegreeOfMaturityScheme ;
+		skos:definition "Ontology is stable, can be used for production, minor changes expected."@en .
+	
+	aowm:Mature
+		a aowm:DegreeOfMaturity, skos:Concept ;
+		rdfs:label "mature"@en ;
+		skos:inScheme aowm:DegreeOfMaturityScheme ;
+		skos:definition "Ontology is fully mature, stable, widely adopted, unlikely to change."@en .
+\end{verbatim}
+
+\newpage
+The same thing was done for different serialization format kinds: 
+\begin{verbatim}
+	aowm:SerializationFormatScheme
+		a skos:ConceptScheme ;
+		skos:hasTopConcept aowm:Turtle, aowm:RdfXml, aowm:JsonLd, aowm:NTriples, 	aowm:Trig ;
+		rdfs:label "Serialization format scheme"@en ;
+		dct:isPartOf <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+	aowm:Turtle
+		a aowm:SerializationFormat, skos:Concept ;
+		rdfs:label "Turtle"@en ;
+		skos:inScheme aowm:SerializationFormatScheme ;
+		skos:definition "Serialization with Turtle."@en .
+	
+	aowm:RdfXml
+		a aowm:SerializationFormat, skos:Concept ;
+		rdfs:label "RDF/XML"@en ;
+		skos:inScheme aowm:SerializationFormatScheme ;
+		skos:definition "Serialization with RDF/XML"@en .
+	
+	aowm:JsonLd
+		a aowm:SerializationFormat, skos:Concept ;
+		rdfs:label "JSON-LD"@en ;
+		skos:inScheme aowm:SerializationFormatScheme ;
+		skos:definition "Serialization with JSON-LD"@en .
+
+	aowm:NTriples
+		a aowm:SerializationFormat, skos:Concept ;
+		rdfs:label " N-Triples"@en ;
+		skos:inScheme aowm:SerializationFormatScheme ;
+		skos:definition "Serialization with N-Triples"@en .
+	
+	aowm:Trig
+		a aowm:SerializationFormat, skos:Concept ;
+		rdfs:label "TriG"@en ;
+		skos:inScheme aowm:SerializationFormatScheme ;
+		skos:definition "Serialization with TriG"@en .
+\end{verbatim}
+
+However, such enumerations were not created for every property. Often, only a simple string is specified as a property range, as this allows for much greater “freedom” in specification and not just a strict selection of enumeration types, where no additional information can be specified (unless additional properties are listed). This decision was made based on own assessment of where potential users of the vocabulary would be most likely to work with an abstract classification of the range or where the annotation of arbitrary information in the form of a string would be more appropriate. All declared classes can be found in the Appendix \ref{app:classes}.
+
+\newpage
+These classes have several object properties, for example an Agent can have some kind of a Role, which is implemented as a class \textit{Role} and an object property \textit{hasRole}, within the corresponding role is specified. 
+\begin{verbatim}
+	aowm:hasRole 
+		a owl:ObjectProperty ;
+		rdfs:label "has role"@en ;
+		rdfs:domain aowm:Ontology, aowm:Catalog ;
+		rdfs:range aowm:Role ;
+		dct:description "Role belonging to a ontology/catalog."@en ;
+		dct:issued "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+\end{verbatim}
+
+There is also an object property \textit{hasAgent}, which assigns an agent to an ontology. 
+\begin{verbatim}
+	aowm:hasAgent 
+		a owl:ObjectProperty ;
+		rdfs:label "has agent"@en ;
+		rdfs:domain aowm:Ontology ;
+		rdfs:range aowm:Agent ;
+		dct:description "Agent belonging to a ontology/catalog."@en ;
+		dct:issued "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+\end{verbatim}
+
+Here is a brief example regarding the usage of the mentioned properties:
+\begin{verbatim}
+	@prefix aowm: <http://dqm.faw.jku.at/ontologies/aowm#> .
+	@prefix ex: <http://example.org/> .
+	@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+	
+	ex:MyOntology
+		a aowm:Ontology ;
+		rdfs:label "Example ontology"@en ;
+		aowm:hasAgent ex:DrAlice ;
+
+	ex:DrAlice
+		a aowm:Agent, aowm:Person ;
+		rdfs:label "Dr. Alice Muster"@en .
+		aowm:hasRole ex:CuratorRole .
+
+	ex:CuratorRole
+		a aowm:Role ;
+		rdfs:label "Curator"@en ;
+		dct:description "Responsible for curating and quality control of the ontology."@en .
+\end{verbatim}
+\newpage
+In addition, for own defined properties the domain is always specified with \textit{rdfs:domain} \footnote{\url{https://www.w3.org/TR/rdf12-schema/\#ch_domain}}, for existing properties only \textit{dcterm:domainIncludes} \footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dcam/domainIncludes/}} is used, describing the possible or rather commonly used areas of application, without a mandatory reference and therefore not overwriting the original domain. Sometimes \textit{dcterm:rangeIncludes} is specified as well. Moreover, \textit{owl:equivalentProperty} \footnote{\url{https://www.w3.org/TR/owl2-syntax/\#Equivalent_Object_Properties}} is used in order to express properties which are semantically equal, thus they are not suggestions, but rather that they can be used instead of the original property whichin \textit{owl:equivalentProperty} is placed. The goal of using these attributes is increasing the interoperability between metadata communities. But foremost for \textit{owl:equivalentProperty} it is important that it is intentional that all properties should have the same semantic. For instance it would not be supporting if one of the mentioned properties has another meaning, or rather semantic. A distinction must also be made between \textit{rdf:type rdf:Property}, which expresses in very general terms: this is an RDF property (very general, without further semantics) and on the other hand \textit{a owl:DatatypeProperty}, which means: this is an OWL data type property, i.e., a property whose values are literals such as \textit{xsd:string} or \textit{xsd:int}, therefore \textit{owl:DatatypeProperty} is a subclass of \textit{trdf:Property}, thus every \textit{owl:DatatypeProperty} is implicitly also an \textit{rdf:Property}. 
+
+A direct usage of an existing property in the vocabulary looks as follows:
+\begin{verbatim}
+	dct:title
+		rdf:type rdf:Property ;
+		rdfs:label "title"@en ;
+		dct:domainIncludes  
+			aowm:Ontology ,
+			aowm:Distribution,
+			aowm:Catalog ;
+		dct:description  "dct: A name given to the resource. OMV: The name by which an ontology is formally known."@en ;
+		rdfs:isDefinedBy <http://purl.org/dc/terms/> ;	
+		dct:issued "2008-01-14"^^xsd:date ;
+		owl:equivalentProperty  
+			rdfs:label ,
+			cc:attributionName ,
+			omv:name ,
+			schema:name ,
+			skos:prefLabel ,
+			foaf:name .
+\end{verbatim}
+\newpage
+Suggesting the use of the property within the classes Ontology, Distribution or Catalog. On the other hand, here the definition of creating a new property:
+\begin{verbatim}
+	aowm:supportPeriod
+		a owl:DatatypeProperty
+		rdfs:label "support period"@en ;
+		rdfs:domain aowm:Ontology ;
+		rdfs:range xsd:string ;
+		dct:description "Planned period of support for an ontology"@en ;
+		dct:issued "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+\end{verbatim}
+
+Ultimately, this results in a mix of utilizing existing properties as well as creating new properties. whereby in general the style of the property definition was adopted from the current version of MOD \footnote{\url{https://github.com/FAIR-IMPACT/MOD/tree/main}}, as were some properties, furthermore the class structure is also based on it in part. As already mentioned, in the context of ontology metadata vocabularies, it is common practice to reuse existing, well-established properties rather than introducing new ones, in order to maximise interoperability and semantic consistency. For instance, the MOD ontology adopts this principle by directly reusing foaf:homepage instead of defining a new, semantically equivalent property \footnote{\url{https://iptc.org/thirdparty/foaf/}}. Although the original FOAF specification assigns only minimal constraints to this property, MOD provides additional, locally valid modelling guidance by specifying \textit{rdfs:domain} and \textit{rdfs:range} statements as well as \textit{dcterms:domainIncludes}. These constraints do not modify the global semantics of FOAF, rather, they constitute application-profile–level restrictions that reflect the intended use of the property within MOD. In particular, defining \textit{rdfs:domain owl:Thing} avoids narrowing the original FOAF scope, while \textit{dcterms:domainIncludes} indicates the expected classes (e.g., ontologies, catalogues) to which the property is typically applied. 
+\newpage
+This combination enables MOD to tailor the property to its metadata requirements without fragmenting the vocabulary landscape or compromising compatibility with FOAF. This property was also adopted using this already excellent approach, with a few modifications such as changing the domainIncludes values.
+\begin{verbatim}
+### http://xmlns.com/foaf/0.1/homepage
+foaf:homepage       
+	rdf:type rdf:Property , owl:InverseFunctionalProperty , owl:ObjectProperty  ;
+	rdfs:subPropertyOf 
+		foaf:page , 
+		foaf:isPrimaryTopicOf ;
+	rdfs:label "homepage"@en , "page web"@fr ;
+	rdfs:domain owl:Thing ;
+	dcterms:domainIncludes 
+		mod:SemanticArtefact ,
+		mod:SemanticArtefactCatalogRecord  ,
+		mod:SemanticArtefactCatalog ;
+	rdfs:range foaf:Document ;
+	dcterms:description "FOAF: A homepage for some thing. MOD: An unambiguous reference to the resource within a given context. DOAP: URI of a blog related to a project. CC: The URL the creator of a Work would like used when attributing re-use. SCHEMA: Indicates a page (or other CreativeWork) for which this thing is the main entity being described."@en ;
+	rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> ;
+	dcterms:issued "2014-01-14"^^xsd:date ;
+	owl:equivalentProperty 
+		schema:mainEntityOfPage ,
+		cc:attributionURL ,
+		doap:blog ,
+		<http://www.isibang.ac.in/ns/mod/1.0/homepage> ;
+	pav:derivedFrom <https://w3id.org/mod/1.0> ;
+	pav:importedOn  "2015-08-05"^^xsd:date ;
+	#OPTIONAL STATEMENTS
+		prov:wasInfluencedBy "MIRO guidelines: C.3" ,
+		"FAIR principle: F2" .
+\end{verbatim}
+
+\newpage
+This property was adopted as follows:
+\begin{verbatim}
+### http://xmlns.com/foaf/0.1/homepage
+foaf:homepage 
+	rdf:type 
+		rdf:Property , 
+		owl:InverseFunctionalProperty , 
+		owl:ObjectProperty  ;
+	rdfs:subPropertyOf 
+		foaf:page , 
+		foaf:isPrimaryTopicOf ;
+	rdfs:label "homepage"@en ;
+	rdfs:domain owl:Thing ;
+	dct:domainIncludes  	
+		aowm:Ontology ,
+		aowm:Catalog ,
+		aowm:CatalogRecord ;
+	rdfs:range foaf:Document ;
+	dct:description "FOAF: A homepage for some thing."@en ;
+	rdfs:isDefinedBy <http://xmlns.com/foaf/0.1/> ;
+	dct:issued "2014-01-14"^^xsd:date ;
+	owl:equivalentProperty  
+		schema:mainEntityOfPage ,
+		cc:attributionURL ,
+		doap:blog .
+\end{verbatim}
+
+Also worth mentioning are the newly introduced properties in the “metadata about metadata” section, a brief excerpt from this can be found in the appendix \ref{app:Props}.
+
+\newpage
+\section{The Resulting Vocabulary}
+The AOWM vocabulary is published under the Creative Commons Attribution 4.0 International License (CC BY 4.0), which allows reuse and extension under the condition of proper attribution \footnote{\url{https://creativecommons.org/licenses/by/4.0/deed.en}}. This license choice aligns with common practices for publishing RDF vocabularies and metadata standards. Overall, the vocabulary is divided into 21 categories, comprising a total of 194 properties using 33 vocabularies, whereby the categories are primarily intended to improve structure and clarity, also with a view to a possible expansion of the product.
+
+The categories are:
+\begin{itemize}
+	\item general properties
+	\item description properties
+	\item license properties
+	\item metrics
+	\item usage and application context properties
+	\item media properties
+	\item person and organization properties
+	\item community properties
+	\item links
+	\item date properties
+	\item elements and relations
+	\item content
+	\item distribution
+	\item versioning and evolution
+	\item quality and maturity
+	\item technical representation
+	\item maintenance and lifecycle
+	\item object descriptions
+	\item methodology and provenance
+	\item metadata about metadata
+	\item miscellaneous
+\end{itemize}
+
+The turtle file was validated with IDLab Turtle Validator \footnote{\url{http://ttl.summerofcode.be/}}. Due to it's size, the resulting vocabulary is located in a github repository under the file name \textit{aowm.ttl} \footnote{\url{https://github.com/moritzhaider/aowm}}.
