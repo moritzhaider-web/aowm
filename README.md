@@ -1,2 +1,2 @@
 # aowm
-Vocabulary for annotating ontolgies with metadata
+Vocabulary for annotating ontologies with metadata
