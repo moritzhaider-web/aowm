@@ -1,0 +1,55 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+\cleardoubleoddpage%  Make sure to start each chapter on a new odd page
+\chapter{Trends - Conclusion And Future Work}
+\label{sec:conclusion}
+\section{Trends}
+In recent years, there has been a noticeable shift in both academic and industrial settings: Knowledge Graphs (KGs) have gained prominence, often hailed as a progression beyond traditional ontologies. But the reality is more nuanced. Ontologies are far from obsolete and Knowledge Graphs are not full replacements, they are better thought of as evolutionary extensions or complements. What follows is a reflection on the differences between the two, whether KGs can be considered successors of ontologies, how relevant ontologies still are and what roles KGs currently play.
+
+Ontologies typically provide formal descriptions of domain concepts. They define what is allowed, providing a schema or model of knowledge. Knowledge Graphs, on the other hand, include not only such schemas but also large numbers of instances - individual entities, relationships among them, potentially from multiple heterogeneous sources, with dynamic updates and often pragmatic concerns, such as query performance. Many ontologies are used without many (or any) instances, rather they are used to classify, annotate and provide metadata. As one recent paper notes \cite{bib:oncology}:
+
+“Ontologies are often published with only the model-level layer, serving as knowledge models for a given domain, without any data.” 
+When large numbers of individuals are represented together with the ontology as schema, we move into the realm of a Knowledge Graph. 
+
+Knowledge Graphs are generally more dynamic: new data - new entities - evolving relations and heterogeneous sources, also more tolerant of inconsistencies. Ontologies as schema tend to be more static, because changes in structure often have large ripple effects in reasoning and usage. Ontologies often carry logical semantics, enabling reasoning, consistency checking, inference and so on. Knowledge Graphs may still use these, especially in the schema part, but in many applications, the reasoning is lighter or supplemented by statistical or machine learning approaches. The focus moves from absolute correctness of the model to usefulness, connectivity, data integration and queryability \cite{bib:landscape}.
+
+\newpage
+\subsection{Are Knowledge Graphs “Successors” of Ontologies?}
+It is inaccurate to view Knowledge Graphs as complete successors in the sense that ontologies are no longer needed. Ontologies remain essential for defining schema, vocabularies, conceptual clarity, semantic interoperability. Every mature Knowledge Graph depends in many cases on an ontology or set of ontologies for its schema part. They allow leveraging of ontologies in more data-intensive, interconnected, practical settings \cite{bib:landscape}. 
+
+\subsection{Are Ontologies Outdated?}
+Ontologies are still active and important, recent literature shows that ontologies remain widely used in many domains. The work from Bernabé et al. shows foundational ontologies are used for ontology construction, repair, mapping, ontology-based data analysis and that they are claimed to improve interoperability and reasoning, though the authors also note empirical evaluation is rare \cite{bib:bioResearch}
+
+A bibliometric topic-modeling study, “Recent Trends and Insights in Semantic Web and Ontology-Driven Knowledge Representation Across Disciplines Using Topic Modeling” (2025), analysed over 10,000 articles from ~2019-2024 and found that ontology engineering remains a core theme alongside knowledge graphs and linked data \cite{bib:trends}. 
+
+However, there are downsides: constructing full formal ontologies is laborious and needs domain expertise. Moreover they can be rigid and adoption sometimes lags. The same biomedical study notes a low number of papers actually providing formal evaluation or empirical tests for claims about foundational ontologies.
+
+\subsection{The Current Role Of Knowledge Graphs}
+Knowledge Graphs have become more prominent. Some of the things they enable and are being used for include:
+
+\begin{itemize}
+	\item Large-scale data integration and linking: 
+	Because data is increasingly distributed, heterogeneous and unstructured, KGs are helpful to connect data, provide links and resolve semantic heterogeneity.
+	
+	\item Machine Learning, Embeddings, AI hybrids:
+	There's a trend of combining KGs with ML methods: embeddings, graph neural networks, multi-modal knowledge graphs. For example, “Knowledge Graphs Meet Multi-Modal Learning: A Comprehensive Survey” (2024) reviews how KGs are being used alongside multi-modal data (images, text, etc.), and how tasks like KG completion, entity alignment, etc. are being addressed \cite{bib:survey}.
+	
+	\item Explainability and AI Systems
+	KGs are fertile ground for explainable or rather interpretable AI because their graph structure and schema (ontologies) enable human-readable relationships and traceability.
+\end{itemize}
+
+\newpage
+\section{Conclusion}
+This thesis has addressed the challenges of metadata representation in the Semantic Web with a particular focus on the design and development of a domain-specific vocabulary to support consistent and interoperable annotations. The creation of this vocabulary demonstrates the feasibility and benefits of reusing established standards, while extending them with new properties tailored to describe the structure, provenance and other relevant characteristics of ontologies. This approach ensures that both domain knowledge and metadata about ontologies themselves can be represented in a coherent and machine-interpretable manner. In summary, the work demonstrates that careful vocabulary design, awareness of existing standards and thoughtful integration of semantic tools are essential for advancing the interoperability, quality and usability of ontology-based metadata, laying a foundation for future research and intelligent, data-driven applications in the Semantic Web. To conclude, I will now give an overview of current trends in this domain as well as an outlook regarding possible future work, preceded by some brief personal conclusion on my part.
+
+At the beginning of this Bachelor's Thesis, I had no experience with ontologies at all, only some basic knowledge of what the Semantic Web is and what it's goals are. I had never encountered the word ontology before, which honestly surprised me, given that it is a very central and important concept in relation to the entire World Wide Web. At first, it was relatively complex to delve into the subject matter, partly due to the multitude of different kinds of ontology representations, but after a certain amount of familiarization, I had a good overview. Then I wanted to get started right away and immediately began defining my own properties for my vocabulary (which always were newly defined properties specified as sub-properties of already established properties from, for example, the VANN vocabulary). This approach was then revised several times, as the reuse of existing properties is also a very essential part of the entire system.  Overall, I found the work on this topic very interesting, from researching various metadata in different vocabularies to implementing them in my own vocabulary. Finally, it was also very informative to explore the current state of knowledge graphs and the usage status of ontologies.
+
+\newpage
+\section{Future Work}
+This thesis opens several directions for future research and practical development in ontology-based metadata modeling and knowledge representation. One potential avenue is the creation of a tool to assist ontology engineers in correctly annotating metadata. Such a tool could support semantic validation, enforce consistency with existing ontologies and reduce errors in large or complex knowledge bases.
+Beyond tooling, future work could focus on integrating automated reasoning and machine-assisted suggestions. Large Language Models (LLMs) have shown potential for recommending appropriate ontology classes, properties and relationships based on textual context \cite{bib:aiApproach}. Incorporating these techniques could streamline the annotation process while maintaining semantic accuracy.
+Another important direction is the enhancement of visualization and user interaction. Interactive interfaces that represent class hierarchies, property relationships and metadata dependencies could make ontology management more accessible, particularly for non-experts and facilitate collaborative editing.
+
+Finally, systematic empirical evaluation is necessary to assess the practical impact of such approaches. Studies could investigate usability, annotation accuracy and efficiency gains in real-world workflows, providing guidance for further refinements and demonstrating the added value of supporting tools in ontology engineering.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

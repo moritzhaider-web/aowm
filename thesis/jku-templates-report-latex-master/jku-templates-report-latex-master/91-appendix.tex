@@ -1,0 +1,177 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+\cleardoubleoddpage%  Make sure to start each chapter on a new odd page
+\chapter*{Appendix}                     
+\addcontentsline{toc}{chapter}{Appendix} 
+\label{app:classes}
+\section*{Classes}
+\addcontentsline{toc}{section}{Classes}
+\begin{verbatim}
+#################################################################
+# Classes 
+#################################################################
+aowm:Resource
+		a owl:Class ;
+		rdfs:subClassOf owl:Thing .
+		rdfs:label "Resource"@en ;
+		rdfs:comment "Generic parent element for all domain classes in the AOWM vocabulary.  
+		Used as the common superclass for ontology metadata resources (Elements, Version, ...)."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:Ontology
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource, mod:SemanticArtefact, owl:Ontology ;
+		rdfs:label "Ontology"@en ;
+		rdfs:comment "A formal specification of a conceptualization, described using RDF-based standards."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date ;
+		rdfs:seeAlso owl:Ontology .
+	
+aowm:Distribution
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource, mod:SemanticArtefactDistribution ;
+		rdfs:label "Distribution of an ontology"@en ;
+		rdfs:comment "A specific representation and/or serialization of an ontology."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:Catalog
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource, mod:SemanticArtefactCatalog ;
+		rdfs:label "Data Catalog"@en ;
+		rdfs:comment "A dedicated web-based system that fosters the availability, discoverability and long-term preservation and maintenance of semantic artefacts, including ontologies."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:CatalogRecord
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource, mod:SemanticArtefactCatalogRecord ;
+		rdfs:label "Ontology Data Catalog Record"@en ;
+		rdfs:comment "A record in a catalog, describing the registration of a single ontology."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:Version
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource ;
+		rdfs:label "Version"@en ;
+		rdfs:comment "A specific version of an ontology or metadata record."@en ;
+		rdfs:seeAlso mod:SemanticArtefactVersion ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:Agent
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource, foaf:Agent ;
+		rdfs:label "Agent"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		rdfs:comment "A resource that acts or has the power to act."@en ;
+		dct:issued "2026-01-31"^^xsd:date ;	
+	
+aowm:Role
+		a owl:Class ;
+		rdfs:label "Role"@en ;
+		rdfs:comment "A role assumed by an agent in relation to a resource."@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date ;
+		rdfs:seeAlso prov:Role .
+	
+aowm:Person
+		a owl:Class ;
+		rdfs:subClassOf aowm:Agent ;
+		rdfs:label "Person"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date >;
+		rdfs:seeAlso foaf:Person .
+	
+aowm:Organization
+		a owl:Class ;
+		rdfs:subClassOf aowm:Agent ;
+		rdfs:label "Organization"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date ;
+		rdfs:seeAlso foaf:Organization .
+	
+aowm:SerializationFormat
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource ;
+		rdfs:label "Serialization Format"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:DegreeOfMaturity
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource ;
+		rdfs:label "Degree Of Maturity"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+	
+aowm:MetadataCreationMethod
+		a owl:Class ;
+		rdfs:subClassOf aowm:Resource ;
+		rdfs:label "Creation Method Of Metadata"@en ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> ;
+		dct:issued "2026-01-31"^^xsd:date .
+\end{verbatim}
+
+
+\label{app:Props}
+\section*{Selection Of Properties}
+\addcontentsline{toc}{section}{Selection Of Properties}  
+\begin{verbatim}
+###metadata about metadata####
+aowm:metadataCreationMethod
+		a owl:DatatypeProperty
+		rdfs:label "creation method"@en ;
+		rdfs:domain aowm:Ontology,
+		aowm:Catalog ;
+		rdfs:range 	aowm:MetadataCreationMethod ;
+		dct:description: "Creation method of metadata - manual, automatic, semi-automatic"@en ;
+		dct:issued          "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+	
+aowm:metadataSource
+		a owl:DatatypeProperty
+		rdfs:label "metadata source"@en ;
+		rdfs:domain aowm:Ontology,
+		aowm:Catalog ;
+		rdfs:range xsd:anyURI	;
+		dct:description: "Source of metadata, e.g. "repository", "person",..."@en ;
+		dct:issued          "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+	
+aowm:metadataGeneratedBy
+		a owl:DatatypeProperty
+		rdfs:label "metadata generated by"@en ;
+		rdfs:domain aowm:Ontology,
+		aowm:Catalog ;
+		rdfs:range xsd:string ;
+		dct:description: "System or software which created the metadata"@en ;
+		dct:issued          "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+	
+aowm:metadataDerivedFrom
+		a owl:DatatypeProperty
+		rdfs:label "metadata derived from"@en ;
+		rdfs:domain aowm:Ontology,
+		aowm:Catalog ;
+		rdfs:range xsd:anyURI ;
+		dct:description: "Other metadata or artifacts, from which this metadata were derived"@en ;
+		dct:issued          "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+	
+aowm:metadataCreationDate
+		a owl:DatatypeProperty
+		rdfs:label "metadata creation date"@en ;
+		rdfs:domain aowm:Ontology,
+		aowm:Catalog ;
+		rdfs:range xsd:dateTime ;
+		dct:description: "Time when metadata was initial created."@en ;
+		dct:issued          "2026-01-30"^^xsd:date ;
+		rdfs:isDefinedBy <http://dqm.faw.jku.at/ontologies/aowm> .
+\end{verbatim}
+
+
+
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,304 @@
+\cleardoubleoddpage%  Make sure to start each chapter on a new odd page
+\chapter{Fundamentals}
+\label{sec:Background}
+
+\section{Semantic Web}
+A student is working on a thesis about the impact of climate change on urban environments. To collect relevant data, the student enters the keywords “urban heat island,” “temperature dataset” and “Vienna” into her preferred search engine. The system returns thousands of links, many of which contain irrelevant or incomplete information. The student filters through numerous pages, comparing data formats, verifying sources and identifying those that can be accessed via open APIs or properly cited in her research. After nearly half an hour, a usable dataset is assembled, though uncertainty remains regarding potentially overlooked sources.
+
+Could this process not be simpler, faster, and more efficient?
+
+Or, for instance, a cybersecurity manager in a multinational research consortium faces an unexpected breach affecting several partner institutions, including universities, startups, and cloud service providers. Within minutes, he must assess dependencies, identify the affected components, and coordinate an international response across time zones and technical domains. The required information exists, distributed across public registries, institutional databases, and technical documentation, but integrating it on the fly demands a level of semantic interoperability that today’s web does not yet provide. This example was adapted from \cite{bib:2006-semantic-web-german}.
+
+The necessity for meaning-aware, machine-interpretable information is the central motivation behind the vision of the Semantic Web. According to Tim Berners-Lee, the inventor of the World Wide Web, a steadily growing community of researchers, developers, and practitioners, the answer to whether such integration is possible, is an emphatic yes \cite{bib:2006-sw-lee}. The fundamental principle of the Semantic Web is to enhance web content so that it can be interpreted not only by humans, but also by machines, thereby enabling automation at the level of meaning. Achieving this objective requires the formal representation of knowledge and relationships, allowing machines to reason about data rather than merely retrieve it. The Semantic Web differs substantially from prior approaches. Efforts to endow machines with an understanding of semantics are not new, artificial intelligence has long pursued automated reasoning and knowledge representation. However, earlier AI systems were generally confined to isolated, narrowly defined domains. Similarly, techniques for the automatic or semi-automatic extraction of semantics from unstructured data predate the Semantic Web, though they now serve as critical components in its implementation. Such methods facilitate the semantic annotation of large volumes of information far more efficiently than manual modeling alone could achieve. What is novel about the Semantic Web is the integration of these approaches, combining distributed and heterogeneous data sources with shared ontological models and open standards to ensure interoperability. This integration enables meaning to be shared and processed across system boundaries, resulting in a decentralized web of linked data built upon a minimal set of universally adopted standards such as RDF, OWL and the SPARQL Protocol And RDF Query Language (SPARQL), through which content creators can explicitly describe the semantics of their information. Equally important is the decentralized nature of both the initiative and its architecture. The Semantic Web is not governed by a central authority but operates as a collaborative movement. Researchers, developers, and organizations contribute ontologies, datasets, and tools independently, adhering to common specifications. In this way, interoperability is achieved without central coordination, reflecting the distributed ethos of the original World Wide Web. The Semantic Web thus represents an evolutionary development: a meaning-oriented layer of the Web that aims to render the world’s information not only accessible but comprehensible to both humans and machines \cite{bib:2006-semantic-web-german}.
+
+To explain or define the term “Semantics” more precisely: semantics is the study of linguistic meaning. It examines what meaning is, how words get their meaning, and how the meaning of a complex expression depends on its parts \footnote{\url{https://en.wikipedia.org/wiki/Semantics}}. 
+Substantially is the distinction between sense and reference, whereby "Sense" is given by the ideas and concepts associated with an expression while "Reference" is the object to which an expression points. Very important is the comparison to syntax, which studies the rules that dictate how to create grammatically correct sentences, in general, it is commonly understood to be a system of rules for combining elementary characters to form composite characters in natural or artificial character systems \footnote{\url{https://de.wikipedia.org/wiki/Syntax}} as well as pragmatics, which investigates how people use language in communication \footnote{\url{https://en.wikipedia.org/wiki/Pragmatics}}. In
+computer science, syntax refers to a set of rules for generating programs or documents with specific properties,
+e.g., valid Extensible Markup Language (XML) documents, whereas semantics refers to the meaning of words or characters (strings) and their relationships to each other.
+Semantics, together with syntactics and pragmatics, is a part of semiotics. 
+In this respect, the term “Semantic Web” is actually too narrow, since
+the current debate takes all three aspects into account \cite{bib:2006-semantic-web-german}. Following
+John F. Sowa \cite{bib:2000-sowa}, it is obviously a matter of the “Semiotic Web”:
+The Internet is a giant semiotic system.
+
+\newpage
+\section{Metadata}	
+Web content is primarily prepared and formatted for human consumption, information expressed using Hypertext Markup Language (HTML) or as a Portable Document Format (PDF) generally suffices for human comprehension, even though the necessary meta-information, such as syntactic or contextual data at the semantic level is not explicitly provided. For machines like a web crawlers, it is initially unclear that a string such as “Mo 21.12.2006, 9:30” represents a date \cite{bib:2006-semantic-web-german}.
+
+Metadata are often described as “data about data,” yet in the context of the Semantic Web that phrase hides considerable complexity. In essence, metadata are descriptive, structural, and semantic annotations that make information about resources explicit in such a way that both humans and machines can interpret it. Through metadata, the meaning of data can be expressed, thereby relating directly to semantics in the context of the Semantic Web \cite{bib:vanHarmlen-webprimer}. A more precise definition sees metadata as information that explicates the semantics, provenance, context, structure, or relations of data, enabling discovery, interoperability, validation, and reuse. Metadata may describe who created a resource, when, where, what format, what parts or components it has, how it relates to other resources, and what constraints apply. In the Semantic Web, metadata are not simply passive labels or catalog entries, but active building-blocks: they provide the means by which machines can understand meaning, align resources to ontologies, infer relationships, assure quality, and integrate data across heterogeneous systems. Because metadata can vary in granularity and formality, they range from simple descriptive metadata, e.g., an author, title or date, to richly structured schemas that define relationships, constraints and logical axioms. Another aspect of metadata is their role in enabling interoperability: without shared understanding of what metadata terms mean, data from different sources remain isolated. Semantic metadata thereby require both standardization, or agreement within communities, of vocabulary and formats, as well as tools that allow annotation, validation and transformation of metadata into forms usable by machines. Moreover, metadata must often include semantics beyond the explicit, for instance, metadata vocabularies may implicitly or explicitly incorporate class hierarchies, property domains and ranges, constraints, allowing machines to deduce implicit knowledge from explicit metadata.
+
+Based on the research from Wilkinson et al. \cite{bib:fair}, metadata in the semantic web should always comply with the FAIR principle, which is an internationally recognized concept and generally describes how data should be designed so that they are findable (F - "Findable"), accessible (A - "Accessible"), interoperable (I - "Interoperable"), and reusable (R - "Reusable"). Metadata should be structured and indexed in such a way that it can be easily found by humans and machines, for instance by using a unique, persistent identifier such as DOI. The data should be accessible via standardized protocols, access can be public or restricted, but the metadata itself should always be available. Moreover it's crucial that metadata use standardized formats in order to enable integration and combination with other data sources, as well as the use of sufficient descriptions to enable reusing the data by other applications, including a clear documentation of facts like the origin, context or license terms  \cite{bib:fairAndSW}. 
+
+\section{Data Catalogs}	
+In 2020, data catalogs were defined as "a tool to centrally collect, create and maintain metadata" by Quimbert et al. \cite{10.1007/978-3-030-87101-7_15}, thereby constituting structured inventories	of data assets within an organization, typically providing metadata such as schemas, provenance, quality indicators and access policies to support discoverability, governance and reuse. Their conceptual foundation often parallels that of ontologies, as both rely on explicit semantic descriptions to organize and contextualize information. While data catalogs primarily focus on operational metadata management, ontologies offer formalized, machine-interpretable models that enable consistent semantic interpretation across heterogeneous datasets. Consequently, ontologies can serve as the semantic backbone of data catalogs by supplying controlled vocabularies, domain models, and relationship structures that enhance interoperability, facilitate metadata integration, and support advanced querying or reasoning over cataloged resources \cite{bib:hoseini2024semantic}.
+
+
+\section{Ontologies}
+While philosophical ontology investigates the fundamental nature of being, categorizing entities and their interrelations within reality, the concept of ontology in the Semantic Web context serves a distinct, operational purpose. Philosophically, ontology addresses questions of existence and the most general structures of reality, focusing on what entities exist and how they can be systematically classified \cite{bib:2003-smith}.
+
+In contrast, Semantic Web ontologies, as defined by Gruber in 1993, are “explicit specifications of conceptualizations” \cite{bib:gruber-ontologies}. They were developed within Artificial Intelligence and are intended to formally represent domain knowledge in a manner that is interpretable by machines and reusable across software applications. These ontologies describe concepts and relationships within a domain, enabling automated reasoning and interpretation rather than merely presenting information for human consumption.
+The term “ontology” thus encompasses a spectrum of objectives: from providing machine-readable structures for data automation to supporting humans in complex, knowledge-intensive tasks such as knowledge management.
+
+\newpage
+\subsection{Main Purpose}
+Ontologies are therefore developed and used to enable data exchange between programs, enable standardization and translation between different forms of knowledge representation as well as to express the semantic of structured and semi-structured information. Structured data refers to information organized in a predefined manner, this data adheres to a strict schema, consisting of rows and columns, where each field is clearly defined, typically within relational databases for example, which then can be efficiently queried with Standard Query Language (SQL). On the other hand semi-structured data lacks a rigid schema but still contains tags or markers to separate elements and enforce hierarchies as it is the case in XML or JavaScript Object Notation (JSON). Furthermore it's crucial to understand that neither ontologies nor other kinds of knowledge representation primarily refer to the goal of presenting or visualizing knowledge networks, but rather first and foremost to a underlying model in order to formally describe this knowledge space \cite{bib:2006-semantic-web-german}.
+
+\subsection{Interoperability}
+As Blumauer et al. argues \cite{bib:2006-semantic-web-german}, interoperability refers to a condition in which business processes and IT architectures are standardized and streamlined both within and across organizational boundaries. Its primary objective is to facilitate interaction among heterogeneous data sources and applications at the technical, organizational, and semantic levels, without undermining the autonomy of individual subsystems. This is particularly relevant in contexts where participating actors employ different data formats, terminologies, or definitions, and where the nature and extent of data exchange vary depending on the specific situation. Typical examples include cross-national communication between public institutions, such as ministries, health insurance providers or large corporations that, due to historical developments, rely on proprietary data formats or organization-specific practices unfamiliar outside their own domain. Since the late 1990s, numerous national and supranational initiatives have been launched to promote interoperability across diverse sectors such as agriculture, tourism, healthcare, and transportation. The complexity of the associated challenges arises primarily from the substantial coordination required among stakeholders and interest groups. As a result, interoperability has become a significant political issue in recent years. Its political relevance is driven especially by the need for cross-sector and cross-national alignment of IT architectures, as well as efforts to establish widely accepted norms and standards that enable large-scale interoperability of existing information and communication systems and terminologies.
+
+\newpage
+\subsection{Core Concept}
+In ontology engineering, several essential modelling elements are distinguished, forming the structural and logical backbone of an ontology. The central components are classes, properties, axioms, individuals and annotations, each fulfilling a specific role in representing domain knowledge. Classes (often referred to as concepts or types) describe the abstract categories of entities within a domain and are typically organized in taxonomic hierarchies through subclass relations. Such class hierarchies allow inheritance of characteristics and support logical inference, as widely described by Gómez-Pérez et al. \cite{bib:perezOntoEng}. Properties (also called relations or attributes) describe how entities are connected or which characteristics they possess. Ontology languages such as OWL distinguish between object properties — which link individuals to other individuals, datatype properties — which assign literal values, and annotation properties — which provide human-readable metadata. Properties may also be constrained by domain and range declarations, and can exhibit logical characteristics such as transitivity, symmetry, functionality or inverses, all of which affect reasoning behaviour. Individuals or instances represent the concrete entities of the domain and instantiate the classes and properties defined in the ontology. They form the assertional layer of the ontology, commonly referred to as the ABox, in contrast to the terminological layer (the TBox), which contains the definitions of classes and properties, a distinction emphasized in many introductions to description logics, such as Baader et al.’s \textit{The Description Logic Handbook} \cite{bib:handbookBader}. Axioms constitute the formal constraints that must hold in every model of the ontology and thereby enable automated reasoning. They specify subclass relations, equivalence conditions, disjointness, cardinality restrictions, property characteristics, and complex class expressions. Through axioms, an ontology becomes a logical theory rather than a mere vocabulary, enabling the derivation of implicit knowledge and the detection of inconsistencies, which is a core principle in formal ontology engineering \cite{bib:2008-semnatic-web-hitzler}.
+
+\subsection{Representation Methods And Web Standards}
+\paragraph{URI}
+A Uniform Resource Identifier (URI) is a standardized string of characters used to uniquely identify a resource on the internet, independently of its location or retrieval mechanism. It provides a global naming scheme that allows resources to be referenced unambiguously, facilitating interoperability and integration across distributed systems. URIs serve as the foundation for addressing and linking information in web-based architectures, enabling consistent identification of documents, data objects, services and other entities \cite{bib:lee-uri}. URIs are a generalization of Uniform Resource Locators (URL).
+
+\newpage
+\paragraph{Resource Description Framework}
+The Resource Description Framework (RDF) is a formal language designed for the description of structured information. RDF enables applications to exchange while preserving its original meaning. Unlike HTML and XML, which primarily focus on the correct presentation of documents, RDF supports the integration and further processing of the contained information. For this reason, RDF is often regarded as a foundational representation format for the development of the Semantic Web. RDF originated in the 1990s, influenced by several precursor languages. The first official specification was published by the W3C in 1999, with a primary emphasis on representing metadata about web resources. In 1999, RDF was primarily conceived for expressing statements about web pages, such as authorship or licensing information. Over time, the vision of the Semantic Web expanded to encompass the general representation of semantic information, extending beyond simple RDF data to include web documents as primary subjects of description. Today, a wide array of practical tools for working with RDF is available. Almost every programming language provides libraries for reading and writing RDF documents. Numerous systems for processing large volumes of RDF data, so-called RDF stores or triple stores, are freely accessible and commercial database vendors increasingly offer corresponding extensions to their systems. In specific application domains, RDF is actively used for exchanging (meta-)data, with RSS 1.0 as a prominent example for news subscription \cite{bib:2006-semantic-web-german}.
+
+An RDF document represents a directed graph composed of a set of nodes connected by directed edges. Both nodes and edges are assigned unique identifiers, ensuring unambiguous reference within the graph. In contrast, information encoded in XML is structured as a tree. Tree structures are well-suited for organizing information in electronic documents, as such data frequently exhibits strictly hierarchical characteristics. Moreover, information arranged in trees can typically be searched and processed efficiently.
+RDF, however, is built on graphs rather than trees. A central motivation for this design choice is that RDF was not intended to depict the hierarchical structure of individual documents, but instead to describe general relationships between resources. For example, it may express that a dog named “Schörli” belongs to an owner, “Max Mustermann”. The relationship between dog and owner constitutes information that is not inherently subordinate to either resource. Consequently, RDF treats such relationships as fundamental informational units. The aggregation of many such relationships naturally gives rise to a graph rather than a hierarchical tree.
+Another rationale lies in RDF’s intended use as a language for describing data on the web and other distributed environments. In such settings, information is often stored and managed in a decentralized manner. RDF enables seamless combination of data from multiple sources: for instance, an RDF graph describing “Schörli” can easily be merged with an RDF graph describing the owner, producing a larger graph that may reveal previously implicit relationships. If websites were to expose their data solely in isolated XML structures, such integration would be considerably more complex. The union of tree structures does not generally yield another tree and information pertaining to the same entities may be dispersed across distinct documents. RDF graphs are therefore particularly well-suited for the integration and composition of decentralized information \cite{bib:2006-semantic-web-german}.
+
+\newpage
+A significant challenge arises from the fact that resources, as in XML, can be assigned different identifiers across RDF documents. On the one hand, the same resource may be labeled differently, for example, because there is no universally agreed-upon identifier for a person such as “Max Mustermann.” On the other hand, identical identifiers might inadvertently be used for distinct resources — for instance, “Max Mustermann” could refer both to a person and to a company with the same name. Such ambiguities must be carefully avoided to ensure accurate and unambiguous representation of resources. To solve the latter problem, RDF generally uses URIs to designate all resources. When describing online documents like HTML pages in RDF, the corresponding URLs are often used. However, in most practical applications, the objective is not to exchange information about web pages, but rather to describe general resources. In principle, any object with a clearly defined identity within the context of a given application can serve as a resource: books, locations, people, publishers, relationships among these entities or even abstract concepts. These resources are not necessarily accessible online, and their URIs are employed solely for unambiguous identification, functioning as Uniform Resource Names (URNs) rather than URLs.
+
+URIs provide a means to identify abstract resources that cannot be directly represented or processed by machines. They serve as references to the intended entities, such as people, books or publishers, hence their interpretation depends on the application. Specific programs may assign additional semantics to particular URIs, for example, by linking a book URI to purchasing options or current prices.
+In contrast, concrete data values such as numbers, dates or boolean values, typically require a consistent interpretation across contexts. In RDF, such values are represented as literals, which are reserved identifiers for resources of a specific data type. The value of a literal is generally expressed as a character string and its interpretation is determined by its datatype. For instance, the strings “42” and “042” denote the same natural number but are distinct character sequences. Literals without an explicitly assigned datatype are interpreted as strings. In RDF graphs, literals are depicted with rectangular nodes to distinguish them from URIs, which are shown in ovals. Importantly, literals cannot serve as the subject of RDF statements, and edges in the RDF graph cannot be labeled with literals, although this restriction rarely poses practical limitations.
+
+\newpage
+\subparagraph{Representation Kinds}
+RDF expresses knowledge through the abstraction of triples, consisting of a subject, a predicate and an object. While this conceptual model remains independent of any specific syntax, various serialization formats have been developed to encode RDF data for storage, exchange and processing. Each of these representation forms follows the same semantic foundation but differs in readability, compactness and suitability for particular use cases.
+
+One of the earliest and most widespread syntaxes is RDF/XML. It represents RDF graphs using XML as an underlying structure. RDF/XML was standardized by the World Wide Web Consortium (W3C) and serves as a bridge between traditional XML-based data interchange and semantic web technologies. Despite its strict syntactic rules and broad compatibility with existing XML tools, RDF/XML is often criticized for its verbosity and complexity. The nested nature of XML can obscure the logical relationships between RDF resources, making manual inspection and debugging difficult. An example of a simple RDF/XML representation is shown below, describing a person named Alice:
+\begin{verbatim}
+	<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:foaf="http://xmlns.com/foaf/0.1/">
+			<foaf:Person rdf:about="http://example.org/alice">
+					<foaf:name>Alice</foaf:name>
+			</foaf:Person>
+	</rdf:RDF>
+\end{verbatim}
+
+To improve human readability and authoring efficiency, the Terse RDF Triple Language (Turtle) was introduced as a more compact alternative. Turtle provides a concise textual notation that closely reflects the underlying RDF triple structure. It allows the use of prefixes to abbreviate URIs and introduces syntactic shortcuts to group related predicates and objects. These features significantly reduce redundancy and improve the clarity of RDF statements. The following Turtle example represents the same information as the RDF/XML snippet above:
+\begin{verbatim}
+	@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+	@prefix ex:   <http://example.org/> .
+	
+	ex:alice a foaf:Person ;
+	foaf:name "Alice" .
+\end{verbatim}
+
+Another serialization, known as N-Triples, offers an extremely simple and machine-friendly representation. In N-Triples, each RDF statement is written as a single line containing a subject, predicate and object, separated by whitespace and terminated by a period. The syntax avoids prefixes and complex structures, which simplifies machine parsing and facilitates large-scale processing. The same RDF data in N-Triples format can be written as:
+\begin{verbatim}
+	<http://example.org/alice> <http://xmlns.com/foaf/0.1/name> "Alice" .
+\end{verbatim}
+
+\newpage
+The last of the most widely used representation formats is provided by JSON-LD, which serializes RDF data using JSON. JSON-LD (Linked Data) is designed to facilitate the integration of semantic data into web applications and Application Programming Interfaces (APIs). By leveraging the popularity and simplicity of JSON, it enables RDF to be consumed and produced by systems that primarily operate with JSON-based data structures. The example below illustrates the representation of the same RDF graph in JSON-LD:
+\begin{verbatim}
+	{
+		"@context": {
+			"foaf": "http://xmlns.com/foaf/0.1/",
+			"name": "foaf:name",
+			"Person": "foaf:Person"
+		},
+		"@id": "http://example.org/alice",
+		"@type": "Person",
+		"name": "Alice"
+	}
+\end{verbatim}
+
+\paragraph{RDF Schema}
+RDF provides the capability to make simple statements about resources. To construct ontologies based on such statements, however, it is necessary to categorize terms and to enable statements to be made about these categories or all members thereof. RDF Schema (RDFS) allows for the definition of classes of objects in RDF, the specification of subclass relationships between classes and the assignment of value and domain constraints to properties. This is achieved through the definition of classes such as rdfs:Resource and rdfs:Class, as well as predicates including rdfs:subClassOf, rdfs:domain, rdfs:range and rdf:type. Within RDF Schema, properties are also considered resources and belong to the class rdf:Property \cite{bib:vanHarmlen-webprimer}.
+
+\paragraph{OWL}
+The Web Ontology Language (OWL) extends RDF and RDF Schema by enabling the definition of classes and relationships between them, which RDF Schema alone does not support, such as the explicit specification or enumeration of subclasses or instances. OWL introduces additional classes and predicates to facilitate ontology construction, allowing for the creation of terminologies, precise property restrictions, and the definition of logical characteristics and equivalences of concepts. New classes can be constructed in OWL through: enumeration of instances, intersection and union of classes, cardinality constraints and complement operations. Subclasses can also be defined by restricting property values of instances, e.g., the subclass of all cars with the color red. Property characteristics such as transitivity, functionality, symmetry, inverses and inverse functionality can be specified. OWL distinguishes between object properties, whose values are class instances and datatype properties, whose values are RDF literals or XML Schema datatypes. OWL is stratified into three levels. OWL Full is fully expressive and includes classes of classes but is undecidable. OWL DL enforces a strict separation between classes (owl:Class) and instances (owl:Thing), as well as between object and datatype properties, while preserving decidable reasoning. OWL Lite further restricts class construction to intersections and property constraints, providing a simpler, implementable subset suitable for practical applications.
+
+Examples of statements that cannot be modeled precisely in RDF(S) include: 
+\textit{Every project has at least one employee.} \\
+\textit{Projects are either internal or external.} \\
+\textit{The secretaries of Hermann Agostino are exactly Ulrich Gigi and Hakob Jaas.} \\
+\textit{The superior of my superior is also my superior.} \\
+\cite{bib:2008-semnatic-web-hitzler}
+
+OWL documents define OWL ontologies. To facilitate their use, two different syntaxes have been developed. The first is based on RDF and is primarily intended for data exchange. It is also referred to as the OWL RDF syntax, since OWL documents in this form are valid RDF documents. The second is the abstract OWL syntax, which is generally more readable for humans. An OWL ontology primarily consists of classes and properties, as in RDF(S). However, OWL allows these classes and properties to be related to each other in more complex ways, enabling the representation of constraints and relationships that cannot be captured adequately by RDF(S) alone. 	The header of an OWL document contains information about the namespaces used, versioning details and annotations. These elements do not directly affect the semantic content of the ontology itself \cite{bib:2008-semnatic-web-hitzler}. 
+As an RDF document, every OWL document has a root element in which the relevant namespaces are defined, as illustrated in the following example:
+\begin{verbatim}
+<rdf:RDF
+		xmlns="http://www.example.org/"
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+		xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+		xmlns:owl="http://www.w3.org/2002/07/owl#">
+
+		<owl:Ontology rdf:about="">
+				<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+				SWRC Ontology, version from December 2005
+				</rdfs:comment>
+				<owl:versionInfo>v0.5</owl:versionInfo>
+				<owl:imports rdf:resource="http://www.example.org/foo"/>
+				<owl:priorVersion rdf:resource="http://ontoware.org/projects/swrc"/>
+		</owl:Ontology>
+</rdf:RDF>
+\end{verbatim}
+Example from the book "Semantic Web", written by Pascal Hitzler et al. \cite{bib:2008-semnatic-web-hitzler}.
+
+\newpage
+\paragraph{SPARQL}
+	SPARQL (SPARQL Protocol and RDF Query Language) is the standard query language recommended by the W3C for retrieving and manipulating data stored in RDF format. Analogous to the role of SQL in relational databases, SPARQL provides a formal mechanism to query semantic data by matching graph patterns rather than table structures. Its design reflects the graph-based nature of RDF, allowing users to express complex queries over distributed and heterogeneous data sources. A SPARQL query typically consists of a set of triple patterns that are matched against the RDF graph. These triple patterns can include variables, which are bound to corresponding elements during query evaluation. The result is a set of variable bindings that satisfy all specified conditions. SPARQL supports a variety of query forms, including SELECT, ASK, CONSTRUCT and DESCRIBE, each serving distinct purposes:
+
+\begin{itemize}
+	\item SELECT queries return tabular results with variable bindings.
+	\item ASK queries return a Boolean value indicating whether a given pattern exists in the dataset.
+	\item CONSTRUCT queries generate new RDF graphs based on the matched patterns.
+	\item DESCRIBE queries return RDF data that provides information about specific resources.
+\end{itemize}
+
+An example of a simple SPARQL query is shown below:
+\begin{verbatim}
+	PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+	PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+	
+	SELECT ?person ?name
+	WHERE {
+		?person rdf:type foaf:Person .
+		?person foaf:name ?name .
+	}
+\end{verbatim}
+
+This query retrieves all resources of type foaf:Person along with their corresponding names, using namespace prefixes to improve readability. SPARQL also provides mechanisms for filtering and combining query results. Filters can restrict variable bindings based on logical or arithmetic conditions and query results can be joined across multiple datasets using GRAPH clauses or SERVICE endpoints. This enables federated queries across distributed semantic data sources, an essential feature for the Semantic Web. In addition to querying, the SPARQL standard includes an update language, SPARQL Update, which allows the insertion, modification and deletion of RDF triples in datasets. The SPARQL Protocol defines how queries and updates are transmitted over HTTP, making SPARQL a key component of the Semantic Web infrastructure. SPARQL thus forms the central interface between ontology-based data representation and practical data access. It enables semantically rich, machine-interpretable information to be queried and integrated across diverse domains, thereby realizing the foundational vision of the Semantic Web \cite{bib:2008-semnatic-web-hitzler}.
+
+\subsection{Vocabularies}	
+Within such ontologies, vocabularies are core. A vocabulary is essentially a collection of terms and their interrelations, designed to be reused in annotations and metadata. Terms in a vocabulary provide names for types of things and relations and often include definitions, labels, comments and constraints, for instance saying that property P links subject of class A to object of class B. In effect, vocabularies give structure to metadata, they allow metadata to be more than simple key-value pairs, by situating metadata terms in a structured scheme, often with hierarchical relationships, domain and range constraints, etc. To put it more bluntly, a vocabulary is a set of symbolic building blocks, which is used by an ontology, in order to describe it's domain.
+
+A significant challenge in ontology engineering is the lack of standardized vocabularies for describing metadata about ontologies themselves. While the Semantic Web provides formal standards for modeling data (RDF, RDFS, OWL), there is no universally accepted schema to annotate ontologies with information such as creator, version, license, provenance or domain coverage. According to Peroni et al. and dAquin and Gangemi, this absence of a single standard hinders ontology discovery, interoperability and reuse across repositories and applications \cite{bib:beatuy} \cite{bib:peroni}. 
+
+Different communities have thus developed their own metadata vocabularies to cover overlapping needs. Some widely used ones are: 
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabularx}{\textwidth}{>{\RaggedRight\arraybackslash}p{3cm} 
+			>{\RaggedRight\arraybackslash}X 
+			>{\RaggedRight\arraybackslash}X}
+		\hline
+		\textbf{Name} & \textbf{Purpose} & \textbf{Typical Terms} \\
+		\hline
+		
+		DC Terms (Dublin Core) &
+		General-purpose metadata for digital and semantic resources &
+		\texttt{dcterms:title}, \texttt{dcterms:description}\\
+		& &
+		\texttt{dcterms:creator}, \texttt{dcterms:license}\\
+		& &
+		\texttt{dcterms:issued}, \texttt{dcterms:modified}\\
+		& &
+		\texttt{dcterms:version} \\
+		
+		\hline
+		RDFS / OWL &
+		Basic annotation and structural metadata for ontologies &
+		\texttt{rdfs:label}, \texttt{rdfs:comment}\\
+		& &
+		\texttt{rdfs:isDefinedBy}, \texttt{rdfs:seeAlso}\\
+		& &
+		\texttt{owl:versionInfo}, \texttt{owl:imports}\\
+		& &
+		\texttt{owl:deprecated} \\
+		
+		\hline
+		PROV-O &
+		Modeling provenance, derivation, and attribution of resources &
+		\texttt{prov:wasDerivedFrom}, \texttt{prov:wasAttributedTo}\\
+		& &
+		\texttt{prov:generatedBy} \\
+		
+		\hline
+		PAV &
+		Lightweight provenance, authoring, and versioning metadata &
+		\texttt{pav:createdBy}, \texttt{pav:createdOn}\\
+		& &
+		\texttt{pav:version}, \texttt{pav:derivedFrom} \\
+		
+		\hline
+		SKOS &
+		Modeling and documenting controlled vocabularies &
+		\texttt{skos:prefLabel}, \texttt{skos:altLabel}\\
+		& &
+		\texttt{skos:definition}, \texttt{skos:scopeNote} \\
+		
+		\hline
+		Ontology-specific vocabularies (OMV, DOOR, VOAF) &
+		Ontology-level description, usage, and metric metadata &
+		Ontology domain, intended use\\
+		& &
+		Version history, ontology metrics \\
+		
+		\hline
+	\end{tabularx}
+	\caption{Purpose And Typical Terms Of Commonly Used Metadata Vocabularies}
+	\label{tab:vocab-purpose-terms}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabularx}{\textwidth}{>{\RaggedRight\arraybackslash}p{3cm}
+			>{\RaggedRight\arraybackslash}X
+			>{\RaggedRight\arraybackslash}X}
+		\hline
+		\textbf{Name} & \textbf{Strengths} & \textbf{Limitations} \\
+		\hline
+		
+		DC Terms (Dublin Core) &
+		Widely adopted; simple; interoperable across domains &
+		Generic scope; limited domain specificity; overlapping properties \\
+		
+		\hline
+		RDFS / OWL &
+		Universally supported; core Semantic Web standards &
+		Mostly informal annotations; limited provenance; versioning support \\
+		
+		\hline
+		PROV-O &
+		Expressive and formally defined provenance model &
+		High modeling effort; comparatively complex; often excessive for small ontologies \\
+		
+		\hline
+		PAV &
+		Lightweight and easy to apply; complements DC and PROV-O &
+		Less widely adopted; partial overlap with existing standards \\
+		
+		\hline
+		SKOS &
+		Well-suited for terminology management and labeling &
+		Limited expressiveness; not intended for complex OWL axioms \\
+		
+		\hline
+		Ontology-specific vocabularies (OMV, DOOR, VOAF) &
+		Rich ontology description and analysis capabilities &
+		Heterogeneous modeling; weak tool support; limited adoption \\
+		
+		\hline
+	\end{tabularx}
+	\caption{Strengths And Limitations Of Commonly Used Metadata Vocabularies}
+	\label{tab:vocab-strengths-limitations}
+\end{table}
+
+The two tables above were created with ChatGPT in order to get an overview of commonly used metadata vocabularies as well as their corresponding purpose, strengths and limitations \footnote{\url{https://chatgpt.com/}}.
+
+Because these vocabularies overlap, there is still no harmonized framework ensuring semantic consistency across ontology repositories. Consequently, ontology metadata often remain heterogeneous and incomplete, limiting automation in ontology discovery and alignment \cite{bib:hartmann}.
+
+So why is sharing and reusing ontologies a central task in the semantic web at all? And why does annotating metadata to ontologies facilitate this task?
+
+The goal of the Semantic Web is to enable data to be understood and linked not only by humans, but also by machines. To achieve this goal, ontologies must create standardized meanings: when different systems use the same ontologies, they understand terms such as person, organization, or location in the same way. Shared ontologies enable data sources and applications to communicate with each other without having to manually align their data structures or meanings. Existing ontologies can be reused and expanded instead of developing new semantic models for each project. This saves effort and increases consistency. Annotating metadata for ontologies means describing additional information about the ontology itself, such as author, version, license, scope, language, related ontologies, intended use or quality characteristics. This metadata facilitates sharing and reuse because it improves discoverability: metadata enables ontologies to be searched for and identified in repositories like BioPortal \footnote{\url{https://bioportal.bioontology.org/}}. This allows developers and researchers to assess whether an ontology meets their requirements. In addition, information about origin and version increases transparency and traceability. And, of course, references to related ontologies or import relationships help with integration into existing systems.
+
+\subsection{Documentation Tools}	
+Ontologies are typically created using dedicated editors and subsequently exported in formats such as Turtle or RDF/XML, which are difficult for humans to read and navigate. Researchers often address this limitation by referring to papers or technical reports that describe the ontology. However, such publications generally focus on presenting scientific contributions rather than providing detailed definitions of each ontological concept. A more suitable approach is to produce comprehensive documentation for all terms contained in the ontology. Because this is a time-consuming process, the Semantic Web community has developed a variety of tools to support ontology documentation. These tools take an ontology file as input and automatically generate HTML documentation based on the metadata embedded within the ontology, producing structured sections for all classes, properties and named individuals. Many tools also offer visualizations of the ontology, including classes and their relationships, which is particularly useful for gaining an overview of larger or more complex ontologies. Widely used tools for ontology documentation include pyLODE, WIDOCO, Parrot and OwlDoc, the latter being integrated directly into the Protégé ontology editor.
+
+Tools parse the ontology file, extract the triples where the subject is the ontology (or class or property) and predicate is an annotation property. Also, many ontologies specify metadata at the ontology level, e.g., in OWL files, an ontology element with annotations. Tools find that and read it's annotations. Some properties are built into OWL or RDFS (e.g., \textit{owl:imports, owl:versionInfo, owl:priorVersion, owl:deprecated}) and are standardized. Tools that are ontology-aware know to look for these. If the ontology uses external vocabularies like Dublin Core, tools may import or interpret those annotation predicates. Though not always labeled “metadata”, things like subclass hierarchies, property domains, ranges, cardinalities, restrictions and disjointness are part of the structural content. Documentation tools often combine structural metadata plus narrative/descriptive metadata for a complete view.
+
+Nevertheless there are limitations, not every tool is able to read in every vocabulary, however, most of the documentation tools can recognize standardized RDFS/OWL annotations without any problems. Extern or user-specified vocabularies are only manageable to read if the tool is designed for that purpose or extendable with some kind of plugin for instance. Widoco even suggests missing metadata when an ontology is imported and is used for documenting the resulting vocabulary of this work. Some structural features may not be visually or textually represented (e.g. complex class expressions, certain kinds of restrictions) by some visualization tools \footnote{\url{https://dgarijo.github.io/Widoco/}} \footnote{\url{https://protege.stanford.edu/}} \footnote{\url{https://pypi.org/project/pylode/}} \footnote{\url{https://github.com/dayures/parrot}} \cite{bib:owldoc} \cite{bib:noyMcGuinness}.
